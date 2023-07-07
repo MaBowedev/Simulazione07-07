@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <section class="flex  justify-center items-center text-center">
+
+
+        <div >
+            <input id="pokemonName" type="Text" placeholder="Pokemon name" />
+            <button class="border border-black " id="search">Search</button>
+        </div>
+
+       <div>
+            <div id="pokemonBox" ></div>
+    
+       </div>
+
+
+    </section>
+
+
+    <script>
+        document.querySelector("#search").addEventListener("click", getPokemon);
+
+        function toUppercase(string) {
+            return string.charAt(0).toUpperCase() + string.slice(1);
+        }
+
+        function toLowercase(string) {
+            return string.toLowerCase();
+        }
+
+        function getPokemon(e) {
+            const name = document.querySelector("#pokemonName").value;
+            const pokemonName = toLowercase(name);
+
+            fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`)
+                .then((response) => response.json())
+                .then((data) => {
+                    document.querySelector("#pokemonBox").innerHTML = `
+      <div>
+        <img
+          src="${data.sprites.front_default}"
+          
+        />
+      </div>
+      <div>
+        <h1>${toUppercase(data.name)}</h3>
+        <p>Weight: ${data.weight}</p>
+        <p>Height: ${data.height}</p>
+        <p>Ability: ${data.ability}</p>
+        <p>Order: ${data.order}</p>
+        <p>Species: ${data.species}</p>
+      </div>`;
+                })
+                .catch((err) => {
+                    document.querySelector("#pokemonBox").innerHTML = `
+      <h4>the pokemon does not exist </h4>
+      `;
+                });
+
+
+        }
+
+    </script>
+</body>
+
+</html>
